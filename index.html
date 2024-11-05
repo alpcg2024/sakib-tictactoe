@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: "Comic Sans MS", cursive;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color:#05d9ff ;
+            margin: 0; /* Adjusted from 1 to 0 */
+        }
+        .container {
+            text-align: center;
+            width: 400px;
+        }
+        h1 {
+            font-size: 3rem;
+            color: #040404;
+            margin-bottom: 20px;
+        }
+        .intro {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .cell {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            font-weight: normal;
+            color: #0023ff;
+            background-color: #fff700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .cell:hover {
+            background-color: #f0f0f0;
+        }
+        .message {
+            font-size: 1.2rem;
+            color: #555;
+        }
+        .reset-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .reset-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        <div class="intro"> <p style="font-family:comic sans ms">
+            Hi, I'm <b>Sakib Al Hasan</b>, I read in <b><I>omar kindergarten school & omar garten academy</b></I>. Iam student of class <b>7</b>, a passionate and beginner web developer! <br>
+            I love creating web pages and exploring new technologies.<br>
+            Here is a <b>Tic Tac Toe</b> game that I created to play together....</p>
+        </div>
+        <div class="grid">
+            <div class="cell" onclick="makeMove(this, 0)"></div>
+            <div class="cell" onclick="makeMove(this, 1)"></div>
+            <div class="cell" onclick="makeMove(this, 2)"></div>
+            <div class="cell" onclick="makeMove(this, 3)"></div>
+            <div class="cell" onclick="makeMove(this, 4)"></div>
+            <div class="cell" onclick="makeMove(this, 5)"></div>
+            <div class="cell" onclick="makeMove(this, 6)"></div>
+            <div class="cell" onclick="makeMove(this, 7)"></div>
+            <div class="cell" onclick="makeMove(this, 8)"></div>
+        </div>
+        <div class="message" id="message"></div>
+        <button class="reset-btn" onclick="resetGame()">Restart Game</button>
+    </div>
+
+    <script>
+        const cells = Array(9).fill(null);
+        let currentPlayer = 'X';
+        let isGameOver = false;
+
+        function makeMove(cell, index) {
+            if (cells[index] || isGameOver) return;
+
+            cells[index] = currentPlayer;
+            cell.textContent = currentPlayer;
+            cell.style.color = currentPlayer === 'X' ? '#007bff' : '#ff5722';
+
+            if (checkWinner()) {
+                document.getElementById('message').textContent = `${currentPlayer} Player, This victory is your 🏆🥇🎉`
+                isGameOver = true;
+                return;
+            }
+
+            if (cells.every(cell => cell)) {
+                document.getElementById('message').textContent = "It's a draw!Try again!!";
+                isGameOver = true;
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            document.getElementById('message').textContent = `Player ${currentPlayer}'s turn`;
+        }
+
+        function checkWinner() {
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6]             // Diagonals
+            ];
+            return winningCombinations.some(combination => {
+                const [a, b, c] = combination;
+                return cells[a] && cells[a] === cells[b] && cells[a] === cells[c];
+            });
+        }
+
+        function resetGame() {
+            cells.fill(null);
+            currentPlayer = 'X';
+            isGameOver = false;
+            document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+            document.getElementById('message').textContent = "Player X's turn";
+        }
+    </script>
+</body>
+</html>
